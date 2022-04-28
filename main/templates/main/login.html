@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Socialize</title>
+        <title>Socialize | Login</title>
     </head>
     <body>
         <form action="{% url 'main:login' %}" method="post">
@@ -15,6 +15,7 @@
             <input type="password" id="password" name="password" required>
             <input type="submit" value="Log in">
         </form>
+        <p>Not registered yet? <a href="{% url 'main:signup' %}"> Sign up</a>
     </body>
 </html>
 
