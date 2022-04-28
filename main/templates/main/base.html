@@ -4,6 +4,14 @@
         <title>Socialize | {% block page_name %}Home{% endblock %}</title>
     </head>
     <body>
+        <header>
+            <a href="{% url 'main:index' %}">Socialize</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'main:logout' %}">Log out</a>
+            {% else %}
+                <a href="{% url 'main:login' %}">Log in</a>
+            {% endif %}
+        </header>
         {% block content %}
         {% endblock %}
     </body>

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.urls import reverse
 
@@ -69,9 +69,13 @@ def signup(request):
         return HttpResponseRedirect(reverse("main:posts"))
 
 
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("main:posts"))
+
+
 def posts(request):
-    username = request.user.username if request.user.is_authenticated else "guest"
-    return render(request, "main/posts.html", {"username": username})
+    return render(request, "main/posts.html")
 
 
 def index(request):

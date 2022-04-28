@@ -3,6 +3,6 @@
 {% block page_name %}Posts{% endblock %}
 
 {% block content %}
-    <h2>Welcome, {{username}}</h2>
+    <h2>Welcome, {% if request.user.is_authenticated %}{{user.username}}{% else %}guest{% endif %}</h2>
     <p>No posts yet</p>
 {% endblock %}
