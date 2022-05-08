@@ -3,16 +3,23 @@
 {% block page_name %}Login{% endblock %}
 
 {% block content %}
-    <form action="{% url 'main:login' %}" method="post">
-        {% csrf_token %}
-        {% if error_message %}
-            <p>{{ error_message }}</p>
-        {% endif %}
-        <label for="username">Username: </label>
-        <input type="text" id="username" name="username" value="{{username}}" required autofocus>
-        <label for="password">Password: </label>
-        <input type="password" id="password" name="password" required>
-        <input type="submit" value="Log in">
-    </form>
-    <p>Not registered yet? <a href="{% url 'main:signup' %}"> Sign up</a>
+    <div class="login-form">
+        <h5 class="text-center">Log in</h5>
+        <form action="{% url 'main:login' %}" method="post">
+            {% csrf_token %}
+            {% if error_message %}
+                <p>{{ error_message }}</p>
+            {% endif %}
+            <label>
+                Username:
+                <input type="text" name="username" value="{{username}}" required autofocus>
+            </label>
+            <label>
+                Password:
+                <input type="password" name="password" value="{{password}}" required>
+            </label>
+            <input class="success button" type="submit" value="Log in">
+        </form>
+        <p class="text-center">Not registered yet? <a href="{% url 'main:signup' %}"> Sign up</a>
+    </div>
 {% endblock %}

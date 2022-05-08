@@ -1,18 +1,29 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <title>Socialize | {% block page_name %}Home{% endblock %}</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/css/foundation.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'main/style.css' %}">
     </head>
     <body>
-        <header>
-            <a href="{% url 'main:index' %}">Socialize</a>
-            {% if user.is_authenticated %}
-                <a href="{% url 'main:logout' %}">Log out</a>
-            {% else %}
-                <a href="{% url 'main:login' %}">Log in</a>
-            {% endif %}
+        <header class="top-bar">
+            <div class="top-bar-left">
+                <a href="{% url 'main:index' %}">Socialize</a>
+            </div>
+            <div class="top-bar-right">
+                <strong>{% if user.is_authenticated %}{{user.username}}{% else %}guest{% endif %}</strong>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'main:logout' %}">Log out</a>
+                {% else %}
+                    <a href="{% url 'main:login' %}">Log in</a>
+                {% endif %}
+            </div>
         </header>
-        {% block content %}
-        {% endblock %}
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
     </body>
 </html>
