@@ -59,7 +59,7 @@ def signup(request):
 
         if User.objects.filter(username=username):
             context = {
-                "error_message": "This username is already taken",
+                "error_message": f"Username '{username}' is already taken",
                 "username": username
             }
             return render(request, "main/signup.html", context)

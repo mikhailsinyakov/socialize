@@ -3,7 +3,7 @@
 {% block page_name %}Login{% endblock %}
 
 {% block content %}
-    <div class="login-form">
+    <div id="login-form">
         <h5 class="text-center">Log in</h5>
         <form action="{% url 'main:login' %}" method="post">
             {% csrf_token %}
