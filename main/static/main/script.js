@@ -46,20 +46,24 @@ function handleSubmitForm(e) {
 
 
 window.addEventListener("load", e => {
-    const signupForm = document.getElementById("signup-form");
-    const usernameField = document.querySelector("#signup-form input[name='username']");
-    const password1Field = document.querySelector("#signup-form input[name='password1']");
-    const password2Field = document.querySelector("#signup-form input[name='password2']");
+    const forms = ["signup", "add-username"].map(x => document.getElementById(`${x}-form`));
+    const usernameFields = ["signup", "add-username"].map(x =>
+        document.querySelector(`#${x}-form input[name='username']`));
+    const passwordFields = [1, 2].map(x => document.querySelector(`#signup-form input[name='password${x}']`))
 
-    usernameField.addEventListener("blur", handleUsernameFieldBlur);
-    usernameField.addEventListener("input", () => hideWarning("username-existence-warning"));
+    for (const field of usernameFields) {
+        if (!field) break;
+        field.addEventListener("blur", handleUsernameFieldBlur);
+        field.addEventListener("input", () => hideWarning("username-existence-warning"));
+    }
 
-    password1Field.addEventListener("blur", handlePasswordFieldBlur);
-    password1Field.addEventListener("input", () => hideWarning("passwords-dont-match-warning"));
+    for (const field of passwordFields) {
+        if (!field) break;
+        field.addEventListener("blur", handlePasswordFieldBlur);
+        field.addEventListener("input", () => hideWarning("passwords-dont-match-warning"));
+    }
 
-    password2Field.addEventListener("blur", handlePasswordFieldBlur);
-    password2Field.addEventListener("input", () => hideWarning("passwords-dont-match-warning"));
-
-
-    signupForm.addEventListener("submit", handleSubmitForm);
-});
+    for (const form of forms) {
+        if (form) form.addEventListener("submit", handleSubmitForm);
+    }
+})

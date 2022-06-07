@@ -7,10 +7,17 @@ from django.urls import reverse
 
 def login_view(request):
     if request.method == "GET":
-        return render(request, "main/login.html")
+        context = dict()
+        if "google_login_error" in request.session:
+            del request.session["google_login_error"]
+            context = {
+                "error_message": "An error occured while trying to log in with Google"
+            }
+        return render(request, "main/login.html", context)
     elif request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
+
         if not username or not password:
             context = {
                 "error_message": "Please fill out all the fields",
@@ -65,6 +72,39 @@ def signup(request):
             return render(request, "main/signup.html", context)
 
         user = User.objects.create_user(username, None, password1)
+        login(request, user)
+        return HttpResponseRedirect(reverse("main:posts"))
+
+
+def add_username(request):
+    if request.method == "GET":
+        return render(request, "main/add_username.html")
+    elif request.method == "POST":
+        username = request.POST["username"]
+        email = request.POST["email"]
+        if not username:
+            context = {
+                "error_message": "Please enter an username"
+            }
+            return render(request, "main/add_username.html", context)
+
+        if email != request.session["email"]:
+            context = {
+                "error_message": "You must not change your email",
+                "username": username
+            }
+            return render(request, "main/add_username.html", context)
+
+        if User.objects.filter(username=username):
+            context = {
+                "error_message": f"Username '{username}' is already taken",
+                "username": username
+            }
+            return render(request, "main/add_username.html", context)
+
+        del request.session["email"]
+
+        user = User.objects.create_user(username, email=email)
         login(request, user)
         return HttpResponseRedirect(reverse("main:posts"))
 

@@ -1,0 +1,27 @@
+{% extends "main/base.html" %}
+
+{% block page_name %}Add username{% endblock %}
+
+{% block content %}
+    <div id="add-username-form">
+        <h5 class="text-center">Add username</h5>
+        <form action="{% url 'main:add_username' %}" method="post">
+            {% csrf_token %}
+            {% if error_message %}
+                <p class="text-center error">{{ error_message }}</p>
+            {% endif %}
+            <label>
+                Username: 
+                <input type="text" name="username" value="{{username}}" required autofocus>
+            </label>
+            <p id="username-existence-warning" class="text-center warning hidden">
+                This username is already taken
+            </p>
+            <label>
+                Email: 
+                <input type="text" name="email" value="{{request.session.email}}" required readonly>
+            </label>
+            <input class="success button" type="submit" value="Add username">
+        </form>
+    </div>
+{% endblock %}

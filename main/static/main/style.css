@@ -4,13 +4,17 @@ main {
 }
 
 #login-form,
-#signup-form {
+#signup-form,
+#add-username-form {
     margin-top: 8rem;
     width: 25rem;
+    display: flex;
+    flex-direction: column;
 }
 
 #signup-form input[name="username"],
-#signup-form input[name="password2"] {
+#signup-form input[name="password2"],
+#add-username-form input[name="email"] {
     margin-bottom: 0;
 }
 
@@ -35,4 +39,10 @@ input[type="submit"] {
 
 .hidden {
     visibility: hidden;
+}
+
+#google-button {
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
 }

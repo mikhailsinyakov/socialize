@@ -20,6 +20,7 @@
             </label>
             <input class="success button" type="submit" value="Log in">
         </form>
+        <a href="{% url 'oauth:google' %}" id="google-button" class="button secondary">Log in with Google</a>
         <p class="text-center">Not registered yet? <a href="{% url 'main:signup' %}"> Sign up</a>
     </div>
 {% endblock %}
