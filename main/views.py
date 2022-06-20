@@ -3,38 +3,69 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.urls import reverse
+from main.forms import LoginForm
 
 
 def login_view(request):
     if request.method == "GET":
-        context = dict()
+        form = LoginForm()
+        context = {"form": form}
+
         if "google_login_error" in request.session:
             del request.session["google_login_error"]
-            context = {
-                "error_message": "An error occured while trying to log in with Google"
-            }
+            context["error_message"] = "An error occured while trying to log in with Google"
+
         return render(request, "main/login.html", context)
     elif request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username, password = form.cleaned_data["username"], form.cleaned_data["password"]
+            user = authenticate(username=username, password=password)
+            if user is None:
+                form = LoginForm(initial={"username": username})
+                context = {
+                    "error_message": "You have entered an invalid username or password",
+                    "form": form
+                }
+                return render(request, "main/login.html", context)
 
-        if not username or not password:
-            context = {
-                "error_message": "Please fill out all the fields",
-                "username": username
-            }
+            login(request, user)
+            return HttpResponseRedirect(reverse("main:posts"))
+        else:
+            context = {"form": form}
             return render(request, "main/login.html", context)
 
-        user = authenticate(username=username, password=password)
-        if user is None:
-            context = {
-                "error_message": "You have entered an invalid username or password",
-                "username": username
-            }
-            return render(request, "main/login.html", context)
 
-        login(request, user)
-        return HttpResponseRedirect(reverse("main:posts"))
+# def login_view(request):
+#     if request.method == "GET":
+#         context = dict()
+#         if "google_login_error" in request.session:
+#             del request.session["google_login_error"]
+#             context = {
+#                 "error_message": "An error occured while trying to log in with Google"
+#             }
+#         return render(request, "main/login.html", context)
+#     elif request.method == "POST":
+#         username = request.POST["username"]
+#         password = request.POST["password"]
+
+#         if not username or not password:
+#             context = {
+#                 "error_message": "Please fill out all the fields",
+#                 "username": username
+#             }
+#             return render(request, "main/login.html", context)
+
+#         user = authenticate(username=username, password=password)
+#         if user is None:
+#             context = {
+#                 "error_message": "You have entered an invalid username or password",
+#                 "username": username
+#             }
+#             return render(request, "main/login.html", context)
+
+#         login(request, user)
+#         return HttpResponseRedirect(reverse("main:posts"))
 
 
 def signup(request):

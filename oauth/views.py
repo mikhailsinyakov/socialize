@@ -4,7 +4,7 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from .helper_functions import get_google_oauth_url, get_user_email
+from oauth.helper_functions import get_google_oauth_url, get_user_email
 
 
 def google(request):

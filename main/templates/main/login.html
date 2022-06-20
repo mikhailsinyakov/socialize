@@ -5,19 +5,12 @@
 {% block content %}
     <div id="login-form">
         <h5 class="text-center">Log in</h5>
-        <form action="{% url 'main:login' %}" method="post">
+        <form action="" method="post">
             {% csrf_token %}
             {% if error_message %}
                 <p>{{ error_message }}</p>
             {% endif %}
-            <label>
-                Username:
-                <input type="text" name="username" value="{{username}}" required autofocus>
-            </label>
-            <label>
-                Password:
-                <input type="password" name="password" value="{{password}}" required>
-            </label>
+            {{ form.as_p }}
             <input class="success button" type="submit" value="Log in">
         </form>
         <a href="{% url 'oauth:google' %}" id="google-button" class="button secondary">Log in with Google</a>
