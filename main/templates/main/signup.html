@@ -5,26 +5,24 @@
 {% block content %}
     <div id="signup-form">
         <h5 class="text-center">Sign up</h5>
-        <form action="{% url 'main:signup' %}" method="post">
+        <form action="" method="post">
             {% csrf_token %}
             {% if error_message %}
                 <p class="text-center error">{{ error_message }}</p>
             {% endif %}
-            <label>
-                Username: 
-                <input type="text" name="username" value="{{username}}" required autofocus>
-            </label>
+            {{ form.username.label_tag }}
+            {{ form.username }}
+            {{ form.username.errors }}
             <p id="username-existence-warning" class="text-center warning hidden">
                 This username is already taken
             </p>
-            <label>
-                Password: 
-                <input type="password" name="password1" required>
-            </label>
-            <label>
-                Confirm password: 
-                <input type="password" name="password2" required>
-            </label>
+
+            {{ form.password1.label_tag }}
+            {{ form.password1 }}
+            {{ form.password1.errors }}
+            {{ form.password2.label_tag }}
+            {{ form.password2 }}
+            {{ form.password2.errors }}
             <p id="passwords-dont-match-warning" class="text-center warning hidden">
                 Your passwords should match
             </p>

@@ -50,15 +50,15 @@ window.addEventListener("load", e => {
     const usernameFields = ["signup", "add-username"].map(x =>
         document.querySelector(`#${x}-form input[name='username']`));
     const passwordFields = [1, 2].map(x => document.querySelector(`#signup-form input[name='password${x}']`))
-
+    
     for (const field of usernameFields) {
-        if (!field) break;
+        if (!field) continue;
         field.addEventListener("blur", handleUsernameFieldBlur);
         field.addEventListener("input", () => hideWarning("username-existence-warning"));
     }
 
     for (const field of passwordFields) {
-        if (!field) break;
+        if (!field) continue;
         field.addEventListener("blur", handlePasswordFieldBlur);
         field.addEventListener("input", () => hideWarning("passwords-dont-match-warning"));
     }

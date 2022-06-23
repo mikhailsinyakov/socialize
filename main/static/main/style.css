@@ -13,8 +13,7 @@ main {
 }
 
 #signup-form input[name="username"],
-#signup-form input[name="password2"],
-#add-username-form input[name="email"] {
+#signup-form input[name="password2"] {
     margin-bottom: 0;
 }
 
@@ -45,4 +44,17 @@ input[type="submit"] {
     border-radius: 10px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.errorlist {
+    margin-left: 0;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.errorlist li {
+    list-style-type: none;
+    font-size: 0.8rem;
+    margin-bottom: 0;
+    color: red;
 }

@@ -61,7 +61,7 @@ class SignupForm(forms.Form):
         if password1 and password2:
             if password1 != password2:
                 self.add_error("password2", ValidationError(
-                    "Passwords don't match, please retype"), code='passwords_dont_match')
+                    "Passwords don't match, please retype", code='passwords_dont_match'))
 
 
 class AddUsernameForm(forms.Form):
