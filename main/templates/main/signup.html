@@ -16,6 +16,9 @@
             <p id="username-existence-warning" class="text-center warning hidden">
                 This username is already taken
             </p>
+            {{ form.email.label_tag }}
+            {{ form.email }}
+            {{ form.email.errors }}
 
             {{ form.password1.label_tag }}
             {{ form.password1 }}

@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.urls import reverse
 from main.forms import LoginForm, SignupForm, AddUsernameForm
+from main.models import Profile
 
 
 def login_view(request):
@@ -43,7 +44,9 @@ def signup(request):
     elif request.method == "POST":
         form = SignupForm(request.POST)
         if form.is_valid():
-            username, password1, password2 = form.cleaned_data["username"], form.cleaned_data["password1"], form.cleaned_data["password2"]
+            username, email = form.cleaned_data["username"], form.cleaned_data["email"]
+            password1, password2 = form.cleaned_data["password1"], form.cleaned_data["password2"]
+            if email == "": email = None
             if User.objects.filter(username=username):
                 form = SignupForm()
                 context = {
@@ -51,7 +54,18 @@ def signup(request):
                     "form": form
                 }
                 return render(request, "main/signup.html", context)
-            user = User.objects.create_user(username, None, password1)
+            if email and User.objects.filter(email=email):
+                current_profile = Profile.objects.get(user__email=email)
+                
+                context = {"form": SignupForm()}
+                if current_profile.is_email_verified:
+                    context["error_message"] = f"Email '{email}' is already taken"
+                else:
+                    context["error_message"] = f"Email '{email}' is used by another user. If it is your email, you can sign up via Google"
+                return render(request, "main/signup.html", context)
+
+            user = User.objects.create_user(username, email, password1)
+            profile = Profile.objects.create(user=user, is_email_verified=False)
             login(request, user)
             return HttpResponseRedirect(reverse("main:posts"))
         
