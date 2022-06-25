@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.urls import reverse
+from main.models import Profile
 
 from oauth.helper_functions import get_google_oauth_url, get_user_email
 
@@ -26,8 +27,13 @@ def google_redirect(request):
     users = User.objects.filter(email=email)
     if users:
         user = users[0]
-        login(request, user)
-        return HttpResponseRedirect(reverse("main:posts"))
-    else:
-        request.session["email"] = email
-        return HttpResponseRedirect(reverse("main:add_username"))
+        profile = Profile.objects.get(user__email=email)
+        if profile.is_email_verified:
+            login(request, user)
+            return HttpResponseRedirect(reverse("main:posts"))
+        
+        user.email = ""
+        user.save()
+
+    request.session["email"] = email
+    return HttpResponseRedirect(reverse("main:add_username"))
