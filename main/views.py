@@ -8,6 +8,8 @@ from main.models import Profile
 
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("main:posts"))
     if request.method == "GET":
         form = LoginForm()
         context = {"form": form}
@@ -37,6 +39,8 @@ def login_view(request):
         return render(request, "main/login.html", context)
 
 def signup(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("main:posts"))
     if request.method == "GET":
         form = SignupForm()
         context = {"form": form}
@@ -75,6 +79,8 @@ def signup(request):
         return render(request, "main/signup.html", context)
     
 def add_username(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("main:posts"))
     if request.method == "GET":
         form = AddUsernameForm(initial={"email": request.session["email"]})
         context = {"form": form}
