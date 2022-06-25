@@ -102,8 +102,13 @@ def add_username(request):
 
 def confirm_email(request):
     if request.method == "GET":
-        context = {"email": request.user.email, "username": request.user.username}
-        return render(request, "main/confirm_email.html", context)
+        if request.user.is_authenticated:
+            profile = Profile.objects.get(user__username=request.user.username)
+            if not profile.is_email_verified:
+                context = {"email": request.user.email, "username": request.user.username}
+                return render(request, "main/confirm_email.html", context)
+                
+    return HttpResponseRedirect(reverse("main:posts"))
 
 
 def logout_view(request):
