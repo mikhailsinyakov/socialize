@@ -67,7 +67,9 @@ def signup(request):
             user = User.objects.create_user(username, email, password1)
             profile = Profile.objects.create(user=user, is_email_verified=False)
             login(request, user)
-            return HttpResponseRedirect(reverse("main:posts"))
+            if email is None:
+                return HttpResponseRedirect(reverse("main:posts"))
+            return HttpResponseRedirect(reverse("main:confirm_email"))
         
         context = {"form": form}
         return render(request, "main/signup.html", context)
@@ -97,6 +99,11 @@ def add_username(request):
 
         context = {"form": form}
         return render(request, "main/signup.html", context)
+
+def confirm_email(request):
+    if request.method == "GET":
+        context = {"email": request.user.email, "username": request.user.username}
+        return render(request, "main/confirm_email.html", context)
 
 
 def logout_view(request):

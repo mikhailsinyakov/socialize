@@ -1,0 +1,28 @@
+{% extends "main/base.html" %}
+
+{% block page_name %}Confirm email{% endblock %}
+
+{% block content %}
+    <div id="confirm-email">
+        {% csrf_token %}
+        <h5 class="text-center">Confirm email</h5>
+        <p>You can confirm your email to be able to log in via Google using this account</p>
+        <label>
+            Email:
+            <input type="email" value="{{ email }}" disabled/>
+        </label>
+        <input type="hidden" value="{{ username }}" id="username" />
+        <button id="send-email" class="success button">Confirm</button>
+        
+        <p id="skip"><a href="{% url 'main:posts' %}">Skip this step</a></p>
+
+        <div class="hidden">
+            <p>We've sent you verification code</p>
+            <label>
+                Code:
+                <input type="number" id="code-input" />
+            </label>
+            <p class="hidden" id="verification-result"></p>
+        </div>
+    </div>
+{% endblock %}
