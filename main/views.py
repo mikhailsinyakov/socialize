@@ -79,7 +79,6 @@ def add_username(request):
         return render(request, "main/add_username.html", context)
     elif request.method == "POST":
         form = AddUsernameForm(request.POST, initial={"email": request.session["email"]})
-        print(request.POST)
         if form.is_valid():
             username, email = form.cleaned_data["username"], request.session["email"]
             if User.objects.filter(username=username):
@@ -92,6 +91,7 @@ def add_username(request):
             del request.session["email"]
 
             user = User.objects.create_user(username, email=email)
+            profile = Profile.objects.create(user=user, is_email_verified=True)
             login(request, user)
             return HttpResponseRedirect(reverse("main:posts"))
 
