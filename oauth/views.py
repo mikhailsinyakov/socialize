@@ -32,6 +32,8 @@ def google_redirect(request):
             login(request, user)
             return HttpResponseRedirect(reverse("main:posts"))
         
+        profile.error = "Your email has been deleted because another user used it when signing up via Google"
+        profile.save()
         user.email = ""
         user.save()
 

@@ -3,5 +3,8 @@
 {% block page_name %}Posts{% endblock %}
 
 {% block content %}
+    {% if error %}
+        <p class="text-center error">{{ error }}</p>
+    {% endif %}
     <p>No posts yet</p>
 {% endblock %}

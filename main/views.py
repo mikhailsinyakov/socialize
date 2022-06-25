@@ -107,7 +107,7 @@ def confirm_email(request):
             if not profile.is_email_verified:
                 context = {"email": request.user.email, "username": request.user.username}
                 return render(request, "main/confirm_email.html", context)
-                
+
     return HttpResponseRedirect(reverse("main:posts"))
 
 
@@ -117,7 +117,14 @@ def logout_view(request):
 
 
 def posts(request):
-    return render(request, "main/posts.html")
+    context = {}
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user__username=request.user.username)
+        if profile.error:
+            context["error"] = profile.error
+            profile.error = ""
+            profile.save()
+    return render(request, "main/posts.html", context)
 
 
 def index(request):
